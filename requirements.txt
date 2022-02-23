@@ -27,5 +27,4 @@ SQLAlchemy-Utils==0.38.2
 validators==0.18.2
 Werkzeug==2.0.3
 WTForms==3.0.1
-WTForms-Alchemy==0.18.0
 WTForms-Components==0.10.5

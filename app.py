@@ -5,7 +5,7 @@
 import json
 import dateutil.parser
 import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from flask import Flask, render_template, request, Response, flash, redirect, url_for, session
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -201,7 +201,7 @@ def show_venue(venue_id):
 
 @app.route('/venues/create', methods=['GET'])
 def create_venue_form():
-  form = VenueForm()
+  form = VenueForm(**request.form)
   return render_template('forms/new_venue.html', form=form)
 
 @app.route('/venues/create', methods=['POST'])
@@ -237,7 +237,6 @@ def create_venue_submission():
     error = True
 
   if error:
-   
     flash('An error occurred. Venue ' + form.name.data + ' could not be listed.')
     return render_template('forms/new_venue.html', form=form)
 
@@ -262,7 +261,6 @@ def delete_venue(venue_id):
 #  ----------------------------------------------------------------
 @app.route('/artists')
 def artists():
-  # TODO: replace with real data returned from querying the database
   data = db.session.query(Artist).options(load_only(Artist.id, Artist.name))
   return render_template('pages/artists.html', artists=data)
 
@@ -370,7 +368,7 @@ def edit_venue_submission(venue_id):
 
 @app.route('/artists/create', methods=['GET'])
 def create_artist_form():
-  form = ArtistForm()
+  form = ArtistForm(**request.form)
   return render_template('forms/new_artist.html', form=form)
 
 @app.route('/artists/create', methods=['POST'])
@@ -407,7 +405,6 @@ def create_artist_submission():
 
   if (error):
     flash('An error occurred. Artist ' + form.name.data + ' could not be listed.', 'danger')
-    #flash(form.errors.items(), 'danger')
     return render_template('forms/new_artist.html', form=form)
   else:
     flash('Created artist ' + form['name'].data + ' successfully')
